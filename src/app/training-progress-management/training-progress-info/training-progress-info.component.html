@@ -29,7 +29,17 @@
             aria-label="Sizing example input" 
             aria-describedby="inputGroup-sizing-default"
           >
-        </div>        
+        </div>
+        <div class="input-group mb-3" *ngIf="!item.comments">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Your thoughts"
+            (keyup)="onKey($event.target.value)"
+            aria-label="Sizing example input" 
+            aria-describedby="inputGroup-sizing-default"
+          >
+        </div>                
       </td>      
       <td *ngIf="is_mentor" >
         <div *ngIf="item.isFinished === true">

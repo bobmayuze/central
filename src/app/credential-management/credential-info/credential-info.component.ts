@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CredentialManagementService } from '../../services/credential-management.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'central-credential-info',
@@ -25,6 +26,7 @@ export class CredentialInfoComponent implements OnInit {
     }
   };
 
+  current_user_id: any;
   currentChecklistItem = 'SOME ITEM'
   
   currentCheckListItems:Observable<any[]>;
@@ -32,7 +34,8 @@ export class CredentialInfoComponent implements OnInit {
 
   constructor(
     private credentialManagementService: CredentialManagementService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cookieService: CookieService,
   ) { }
 
   onKey(event: any) { // without type info
@@ -44,7 +47,7 @@ export class CredentialInfoComponent implements OnInit {
     let itemInfo = {
       'credential_id' : this.currentCredential.id,
       'text' : this.currentChecklistItem,
-      'created_by' : 0
+      'created_by' : Number(this.current_user_id),
     }
     console.log(itemInfo);
     
@@ -71,7 +74,7 @@ export class CredentialInfoComponent implements OnInit {
   ngOnInit() {
 
     let credentialId = this.route.snapshot.queryParamMap.get('credentialId');
-    
+    this.current_user_id = this.cookieService.get('user_id')
 
     this.credentialManagementService.getCredential(credentialId).subscribe((credential) =>{
       this.currentCredential = credential;
